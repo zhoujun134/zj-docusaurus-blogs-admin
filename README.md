@@ -1,18 +1,14 @@
 # zj-docusaurus-blogs-admin
 
+该项目致力于，通过页面来发布 docusaurus 的博客和文档。
+
+[zj-docusaurus-blogs](https://github.com/zhoujun134/zj-docusaurus-blogs) 项目的管理后台前端项目
+
+相应的后端项目为  [zj-docusaurus-blogs-backend](https://github.com/zhoujun134/zj-docusaurus-blogs-backend)
+
+目前这个项目还在构建过程中。敬请期待
+
 This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ## Project Setup
 
