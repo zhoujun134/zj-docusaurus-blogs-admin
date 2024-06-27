@@ -75,6 +75,8 @@ export interface IArticleOperateReq {
     headerImageUrl?: string
     tagIdList?: string[]
     categoryIdList?: string[]
+    path?:string,
+    type?:string,
 }
 
 export interface IZjToken {

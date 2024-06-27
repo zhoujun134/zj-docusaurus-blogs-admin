@@ -1,15 +1,25 @@
 <script setup lang="ts">
 
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, reactive, ref, watchEffect} from "vue";
 
 import '../assets/css/admin/editor.css'
 import {Plus} from '@element-plus/icons-vue'
 
 import {ElMessage, type UploadFile, type UploadFiles, type UploadProps, type UploadUserFile} from 'element-plus'
 import {addArticleCategory, addArticleTag, publishArticle} from "@/api/editorApi";
-import {getCategoryList, getTagList} from "@/api/articleApi";
-import type {IArticleOperateReq, ICategory, IResult, ISearchReq, ITag} from "@/api/interface/articleType";
+import {getArticleDetail, getCategoryList, getTagList} from "@/api/articleApi";
+import type {
+  ArticleDetailReq, IArticle,
+  IArticleOperateReq,
+  ICategory,
+  IResult,
+  ISearchReq,
+  ITag
+} from "@/api/interface/articleType";
 
+const props = defineProps<{
+  articleId?: string
+}>()
 const articleInfo = reactive<IArticleOperateReq>({
   title: "",
   articleAbstract: "",
@@ -211,6 +221,40 @@ function addTag(value: any): void {
     })
   })
 }
+
+function initContent() {
+  console.log("##initContent: props.articleId=", props.articleId)
+  if (!props.articleId) {
+    return
+  }
+  const detailRequest:ArticleDetailReq = {
+    articleId: props.articleId
+  }
+  getArticleDetail(detailRequest).then(result => {
+    if (!result.data) {
+      return
+    }
+    const articleDetail:IArticle = result.data;
+    let tagIdList:string[] = []
+    let categoryIdList:string[] = []
+    articleDetail.tagList?.forEach(tag => tagIdList.push(tag.tagId))
+    articleInfo.tagIdList = tagIdList
+    articleDetail.categoryList?.forEach(category => categoryIdList.push(category.categoryId))
+    articleInfo.categoryIdList = categoryIdList
+    articleInfo.title = articleDetail.title
+    articleInfo.content = articleDetail.content
+    articleInfo.headerImageUrl = articleDetail.headerImageUrl
+    articleInfo.articleAbstract = articleDetail.articleAbstract
+    articleInfo.path = articleDetail.path
+    articleInfo.type = articleDetail.type
+  })
+}
+// 初始化
+initContent()
+watchEffect(() => {
+  // 监听属性的变化
+  initContent()
+})
 </script>
 
 <template>
