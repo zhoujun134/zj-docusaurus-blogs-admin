@@ -1,8 +1,10 @@
-import {ElLoading} from 'element-plus';
+import {ElLoading, ElMessage} from 'element-plus';
 import {errorCodeType} from "@/api/utils/error-code-type";
 import type {IResult} from "@/api/interface/articleType";
 import axios from "axios";
 import zsBlogConfig from "../../zs-blog-config";
+import Cookies from "js-cookie";
+
 axios.defaults.withCredentials = true;
 // 创建axios实例
 const service = axios.create({
@@ -46,7 +48,7 @@ service.interceptors.request.use(config => {
         let url = config.url + '?';
         for (const propName of Object.keys(config.params)) {
             const value = config.params[propName];
-            var part = encodeURIComponent(propName) + "=";
+            let part = encodeURIComponent(propName) + "=";
             if (value !== null && typeof (value) !== "undefined") {
                 if (typeof value === 'object') {
                     for (const key of Object.keys(value)) {
@@ -65,15 +67,24 @@ service.interceptors.request.use(config => {
     }
     return config
 }, error => {
-    Promise.reject(error).then(res =>
-        console.log(res))
+    Promise.reject(error)
+        .then(res =>
+            console.log("request: res:", res))
 })
 
 // 响应拦截器
 service.interceptors.response.use((res) => {
         hideLoading()
+        if (res.status == 401) {
+            ElMessage.error({
+                message: "登录失效，请重新登录!",
+                duration: 5 * 1000
+            })
+            window.location.href = "/"
+        }
         // console.log("response deal " + JSON.stringify(res.data))
         const result: IResult<object> = res.data as IResult<object>;
+        console.log("result: ", result)
         // 未设置状态码则默认成功状态
         const code = result.code;
         // 获取错误信息
@@ -90,7 +101,7 @@ service.interceptors.response.use((res) => {
         }
     },
     error => {
-        console.error('err' + error)
+        console.error('err', error)
         hideLoading()
         let {message} = error;
         if (message == "Network Error") {
@@ -98,7 +109,16 @@ service.interceptors.response.use((res) => {
         } else if (message.includes("timeout")) {
             message = "系统接口请求超时";
         } else if (message.includes("Request failed with status code")) {
-            message = "系统接口" + message.substr(message.length - 3) + "异常";
+            let statusCode = message.substr(message.length - 3)
+            if (statusCode == "401") {
+                Cookies.remove("zsUserToken");
+                ElMessage.error({
+                    message: "登录失效，请重新登录!",
+                    duration: 5 * 1000
+                })
+                window.location.href = '/'
+            }
+            message = "系统接口" + statusCode + "异常";
         }
         const errorResult: IResult<object> = {
             code: "-1",

@@ -4,6 +4,7 @@ import type {ArticleListReq, IArticle, Page} from "@/api/interface/articleType";
 import {onMounted, ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import ArticleEditorForm from "@/components/ArticleEditorForm.vue";
+import {CircleCloseFilled} from "@element-plus/icons-vue";
 
 const request = ref<ArticleListReq>({
   categoryId: "",
@@ -124,7 +125,7 @@ const handleClose = (done: () => void) => {
   </el-drawer>
   <el-table v-if="articlePageInfo.records"
             :data="articlePageInfo.records"
-            style="width: 100%" height="800"
+            style="width: 100%" height="1200"
             border
             header-cell-class-name="zj-el-table-title"
   >

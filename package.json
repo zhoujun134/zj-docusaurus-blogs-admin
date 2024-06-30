@@ -11,9 +11,12 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "@types/js-cookie": "^3.0.6",
     "axios": "^1.7.2",
     "element-plus": "^2.7.6",
     "icons-vue": "^1.0.9",
+    "js-cookie": "^3.0.5",
     "mavon-editor": "^3.0.1",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3"

@@ -178,6 +178,11 @@ function addCategory(value: any): void {
         message: "添加分类成功！",
         duration: 5 * 1000
       })
+    } else {
+      ElMessage.error({
+        message: "添加分类失败！" + res.message,
+        duration: 5 * 1000
+      })
     }
   }).catch(error => {
     let {message} = error
@@ -210,6 +215,11 @@ function addTag(value: any): void {
     if (res.code == "0") {
       ElMessage.success({
         message: "添加文章标签成功！",
+        duration: 5 * 1000
+      })
+    } else {
+      ElMessage.error({
+        message: "系统开小差了！请稍后重试！error: " + res.message,
         duration: 5 * 1000
       })
     }
@@ -255,6 +265,17 @@ watchEffect(() => {
   // 监听属性的变化
   initContent()
 })
+
+const fileTypeList = [
+  {
+    label:"文档",
+    value: "docs"
+  },
+  {
+    label:"博客",
+    value: "blogs"
+  }
+]
 </script>
 
 <template>
@@ -356,6 +377,29 @@ watchEffect(() => {
                 :key="item.tagId"
                 :label="item.tagName"
                 :value="item.tagId"
+            />
+          </el-select>
+        </el-form-item>
+      </div>
+      <div class="zj-el-form-item">
+        <el-form-item label="文章发布路径" prop="path">
+          <el-input type="text" v-model="articleInfo.path"/>
+        </el-form-item>
+      </div>
+      <div class="zj-el-form-item">
+        <el-form-item label="文章类型" prop="type">
+          <el-select
+              v-model="articleInfo.type"
+              filterable
+              :reserve-keyword="false"
+              placeholder="请选择文章类型"
+              style="width: 60%"
+          >
+            <el-option
+                v-for="item in fileTypeList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
             />
           </el-select>
         </el-form-item>

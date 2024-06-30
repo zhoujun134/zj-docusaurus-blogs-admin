@@ -17,6 +17,12 @@ export interface ICategory {
     name: string
 }
 
+export interface IDocusaurusConfig {
+    docusaurusProjectPath: string,
+    buildHistoryPath: string,
+    nginxSitePath: string
+}
+
 export interface ITag {
     tagId: string,
     tagName: string
@@ -124,4 +130,13 @@ export interface Page<T> {
     records?: T[]
 }
 
+export interface IHomeInfo {
+    login: boolean;
+}
 
+export interface IFriendInfo {
+    title?: string;
+    siteUrl?: string;
+    logoUrl?: string;
+    description?: string;
+}
